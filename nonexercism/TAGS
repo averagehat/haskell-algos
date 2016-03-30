@@ -1,0 +1,8 @@
+
+./BST.hs,179
+data Tree Tree4,5
+data Tree a = Node Node4,5
+data Tree a = Node Integer (Tree a) a (Tree a) | LeafLeaf4,5
+foldTree foldTree14,15
+foldTree foldTree15,16
+main main32,33

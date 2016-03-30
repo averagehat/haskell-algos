@@ -1,0 +1,45 @@
+
+data Tree a = Node Integer (Tree a) a (Tree a) | Leaf
+ deriving (Show, Eq)
+          --show Node (h l r) = show' k
+foldTree :: [a] -> Tree a
+foldTree xs = foldr insert' Leaf xs
+  where
+    insert' :: a -> Tree a -> Tree a
+    insert' x n = fst $ insert x n
+    insert :: a -> Tree a -> (Tree a, Integer)
+    insert x Leaf = (empty x 0, 0)
+    insert x (Node h Leaf v Leaf) _ = (Node 1 (empty x 0) v Leaf, 1)
+    insert x (Node h Leaf v Leaf) _ = (Node 1 (empty x 0) v Leaf, 1)
+    insert x (Node h Leaf v r@(Node _ _ _ _)) _ = (Node 1 (empty x 0) v r, 0)
+    insert x (Node h l@(Node _ _ _ _) v Leaf) _ = (Node 1 l v (empty x 0), 0)
+    insert x (Node h l@(Node lh _ _ _) v r@(Node rh _ _ _)) last =
+      if (lh > rh)  then
+        let (n, h') = (insert x l (not last))
+            in (Node (h' + h) n v r, h')
+      else
+        if (lh > rh)
+          let (n, h') = (insert x r (not last)) 
+              in (Node (h' + h) l v n, h')
+        else
+      where
+          (rn, rh) = (insert x r (not last))
+          (ln, lh) = (insert x l (not last))
+               
+               
+    --f x Leaf           = Node 1 Leaf x Leaf
+--               
+    --insert x Leaf = (empty x 0, 1)
+--       | lh > rh = Node (h + x) n v r 
+--       | otherwise = Node (h + x) l v n
+--         where
+--           (n, x) = (insert 
+           
+        
+        
+--    f x Node n Leaf v r = Node n (Node n+2 Leaf )
+--foldr
+
+main = do
+  putStrLn $ show $ foldTree "ABCDEFGHIJK"
+  putStrLn $ show $ foldTree [1..20]
