@@ -112,3 +112,21 @@ romanToInt (M:xs) = 1000 + romanToInt xs
   
 data Roman = I | V | X | L | C | D | M
 --riMap = M.fromList [('X', 10), ('V', 5), ('I', 1), ('L', 50), ('C', 100), ('D', 500), ('M', 1000)]
+--
+swap :: (a, b) -> (b, a)
+swap (a, b) = (b, a)
+
+rotate :: (Show a) => Int -> [a] -> [a]
+rotate k xs = (uncurry (++)) $ swap $ splitAt ((k - len) `mod` len) xs 
+  where 
+    len = length xs
+    splitAt :: Int -> [a] -> ([a], [a])
+    splitAt k xs = (map fst x, map fst y)
+       where (x, y) = span ((<= k) . snd) $ zip xs [0..]
+       
+--rotate 7 [1, 2, 3]
+--[3, 1, 2]
+rotateShow = do
+  let res =  rotate 3 [1..7] -- [5,6,7,1,2,3,4]
+  print $ show res
+  print $ show $ rotate 1 [1, 2, 3]

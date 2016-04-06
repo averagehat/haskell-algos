@@ -33,3 +33,15 @@ foldTree xs = foldr insert Leaf xs
 main = do
   putStrLn $ show $ foldTree ([] :: [Int])
   putStrLn $ show $ foldTree "ABCDEFGHIJK"
+
+data Tree a = Leaf | Node a (Tree a) (Tree a)
+empty v = Node v Leaf Leaf
+-- left, parent, right
+flatten :: Tree a -> [a]
+flatten n@(Node x l r) = (x : (flatten l)) ++ (flatten r)
+flatten Leaf = [] 
+
+
+main2 = do 
+  let res = flatten $ (Node 1 (Node 2 (empty 3) (empty 4)) (Node 5 Leaf (empty 6)) )
+  print res
