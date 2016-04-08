@@ -5,6 +5,7 @@ import Data.Maybe (fromMaybe)
 import Data.Functor ( (<$>) )
 import Control.Applicative ( (<*>) )
 import Control.Monad (liftM2)
+import Data.List (splitAt)
 --twoSum ::  [Int] -> [Int] -> Int -> Maybe (Int, Int)
 ----twoSum xs ys n = twoSum' xs (fromList ys)
 ----  where
@@ -23,15 +24,6 @@ import Control.Monad (liftM2)
 --    Just (Just (b, c)) = (`M.lookup` m) <$> a
     
     
-main :: IO () 
-main = do
-  putStrLn $ show $ twoSum [1..5] [0..3] 6 
-  putStrLn $ show $ twoSum [1..5] [0..3] 6 
-  putStrLn $ show $ take' 3 [1..5]
-  putStrLn $ show $ foldl (flip (:)) [] [1..10]
-  putStrLn $ show $ singleNum [1, 2, 3, 4, 4, 6, 2, 1, 2 ]
-  putStrLn $ show $ romanToInt [M,M,X,V,I]
-  putStrLn $ show $ romanToInt [X,L,I,V]
   --putStrLn $ show $ threeSum [1..5] [0..4] []  3
 
 twoSumFind xs ys n = find (\x -> (n - x) `member` set) xs
@@ -117,16 +109,31 @@ swap :: (a, b) -> (b, a)
 swap (a, b) = (b, a)
 
 rotate :: (Show a) => Int -> [a] -> [a]
-rotate k xs = (uncurry (++)) $ swap $ splitAt ((k - len) `mod` len) xs 
-  where 
-    len = length xs
-    splitAt :: Int -> [a] -> ([a], [a])
-    splitAt k xs = (map fst x, map fst y)
-       where (x, y) = span ((<= k) . snd) $ zip xs [0..]
-       
+rotate k xs = uncurry (++) $ swap $ splitAt (k `mod` length xs) xs 
+--    splitAt :: Int -> [a] -> ([a], [a])
+--    splitAt k xs = (map fst x, map fst y)
+--       where (x, y) = span ((<= k) . snd) $ zip xs [0..]
+
+--move :: Int -> [String] -> String
 --rotate 7 [1, 2, 3]
 --[3, 1, 2]
 rotateShow = do
+  let img = ["XX XX",          
+        "  X  ",
+        "XX XX"]      
+  print $ rotate 1 img
+  print $ rotate (-1) img -- down 1
   let res =  rotate 3 [1..7] -- [5,6,7,1,2,3,4]
   print $ show res
   print $ show $ rotate 1 [1, 2, 3]
+
+main :: IO () 
+main = do
+  rotateShow
+  putStrLn $ show $ twoSum [1..5] [0..3] 6 
+  putStrLn $ show $ twoSum [1..5] [0..3] 6 
+  putStrLn $ show $ take' 3 [1..5]
+  putStrLn $ show $ foldl (flip (:)) [] [1..10]
+  putStrLn $ show $ singleNum [1, 2, 3, 4, 4, 6, 2, 1, 2 ]
+  putStrLn $ show $ romanToInt [M,M,X,V,I]
+  putStrLn $ show $ romanToInt [X,L,I,V]

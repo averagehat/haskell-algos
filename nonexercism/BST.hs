@@ -45,3 +45,50 @@ flatten Leaf = []
 main2 = do 
   let res = flatten $ (Node 1 (Node 2 (empty 3) (empty 4)) (Node 5 Leaf (empty 6)) )
   print res
+
+
+--     1
+--   /  \  
+--  7    2  
+-- |    /
+-- 8  3
+-- |
+-- 9
+
+-- rightmost nodes followed by all rightmost noes
+-- starting with a depth of 0, all rightmost nodes under the last depth followed by 
+-- all next-most right nodes under that depth . . . 
+
+data Tree a = Leaf | Node a (Tree a) (Tree a)
+  deriving (Show)
+
+rightSight :: Tree a -> [a]
+rightSight t = snd $ f t 0 0
+  where
+    f :: Tree a -> Int -> Int -> (Int, [a])
+    f Leaf dsf _ = (dsf, [])
+    f n@(Node v l r) dsf cd = if (cd' > dsf) then (maxd, (v:rest)) else (maxd, rest)
+      where 
+        (ldsf, lrest) = f r (max dsf cd') cd'
+        (rdsf, rrest) = f l ldsf cd'
+        rest = lrest ++ rrest
+        cd' = (cd + 1)
+        maxd = max ldsf rdsf
+
+
+empty x = Node x Leaf Leaf
+
+mainRightSight = do
+  print $ rightSight (empty 1)
+  let n = (Node 1 (Node 7 (Node 8 (empty 9) Leaf) Leaf)   (Node 2 (empty 3) Leaf))
+  print $ rightSight n
+  print $ rightSight $ (Node 1 (Node 2 (empty 3) Leaf) Leaf)
+  let n2 = (Node 1 (Node 2 Leaf (empty 5)) (Node 3 Leaf (empty 4)))
+  print $ rightSight n2
+  
+--   1            <---
+-- /   \
+--2     3         <---
+-- \     \
+--  5     4       <---
+
