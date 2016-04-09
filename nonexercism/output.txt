@@ -1,0 +1,8 @@
+Up is positive
+"  X  "
+"XX XX"
+"XX XX"
+Down is negative
+"XX XX"
+"XX XX"
+"  X  "
