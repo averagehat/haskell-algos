@@ -1,5 +1,4 @@
-module Monads where
-
+module Monads where 
 import Control.Applicative
 import Data.Functor
 import Control.Monad.State  
@@ -28,4 +27,14 @@ searchWord x = state $ \s -> (find (match x) s, s)
 main = do 
   -- running the state gets you a pure value!
   -- runState :: State s a -> s -> (a, s)
+  -- runState takes the initial value.
   print $ runState doState []
+  print $ (runState $ example) 9999
+
+example :: State Int Int
+example = do
+  put 3
+  modify (+ 9)
+  x <- get
+  return (x + 3)
+  
